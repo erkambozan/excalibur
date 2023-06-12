@@ -1,4 +1,4 @@
-import { Controller, HttpStatus, Post } from "@nestjs/common";
+import { Controller, HttpStatus, Post } from '@nestjs/common';
 import { routesV1 } from '@config/app.routes';
 import { CreateUserUseCase } from '@modules/user/domain/usecase/create-user.use-case';
 import { IdResponse } from '@libs/api/id.response.dto';

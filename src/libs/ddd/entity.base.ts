@@ -1,5 +1,11 @@
 export type AggregateID = string;
 
+export interface BaseEntityProps {
+  id: AggregateID;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export interface CreateEntityProps<T> {
   id: AggregateID;
   props: T;
@@ -32,5 +38,23 @@ export abstract class Entity<EntityProps> {
 
   private setId(id: AggregateID): void {
     this._id = id;
+  }
+
+  public getProps(): EntityProps & BaseEntityProps {
+    const propsCopy = {
+      id: this._id,
+      createdAt: this._createdAt,
+      updatedAt: this._updatedAt,
+      ...this.props,
+    };
+    return Object.freeze(propsCopy);
+  }
+
+  get createdAt(): Date {
+    return this._createdAt;
+  }
+
+  get updatedAt(): Date {
+    return this._updatedAt;
   }
 }

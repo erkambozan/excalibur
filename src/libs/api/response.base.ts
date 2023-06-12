@@ -7,14 +7,12 @@ export interface BaseResponseProps {
   updatedAt: Date;
 }
 
-export class ResponseBase implements IdResponse {
+export class ResponseBase extends IdResponse {
   constructor(props: BaseResponseProps) {
-    this.id = props.id;
+    super(props.id);
     this.createdAt = new Date(props.createdAt).toISOString();
     this.updatedAt = new Date(props.updatedAt).toISOString();
   }
-
-  readonly id: string;
 
   @ApiProperty({ example: '2020-11-24T17:43:15.970Z' })
   readonly createdAt: string;

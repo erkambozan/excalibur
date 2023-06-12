@@ -7,10 +7,4 @@ export class UserResponseDto extends ResponseBase {
     description: "User's email address",
   })
   email: string;
-
-  @ApiProperty({
-    example: 'France',
-    description: "User's country of residence",
-  })
-  country: string;
 }

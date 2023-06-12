@@ -18,7 +18,7 @@ import { RequestContextService } from '@libs/application/context/AppRequestConte
 import { AggregateRoot } from '@libs/ddd/aggregate-root.base';
 import { ObjectLiteral } from '@libs/types';
 import { LoggerPort } from '@libs/ports/logger-port';
-import { ConflictException } from "@libs/exceptions";
+import { ConflictException } from '@libs/exceptions';
 
 export abstract class SqlRepositoryBase<
   Aggregate extends AggregateRoot<any>,
@@ -40,12 +40,16 @@ export abstract class SqlRepositoryBase<
     return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
   }
 
-  async insert(entity: Aggregate | Aggregate[]): Promise<void> {
+  async insert(
+    entity: Aggregate | Aggregate[],
+    ifNotExistCreateTableQuery: SqlSqlToken<QueryResultRow>,
+  ): Promise<void> {
     const entities = Array.isArray(entity) ? entity : [entity];
     const records = entities.map((entity) => this.mapper.toPersistence(entity));
     const query = this.generateInsertQuery(records);
 
     try {
+      await this.ifNotExistCreateTable(ifNotExistCreateTableQuery);
       await this.writeQuery(query, entities);
     } catch (error) {
       if (error instanceof UniqueIntegrityConstraintViolationError) {
@@ -122,6 +126,17 @@ export abstract class SqlRepositoryBase<
 
     const parsedQuery = query;
     return parsedQuery;
+  }
+
+  private async ifNotExistCreateTable(
+    ifNotExistCreateTableQuery: SqlSqlToken<QueryResultRow>,
+  ): Promise<void> {
+    try {
+      await this.pool.query(ifNotExistCreateTableQuery);
+      console.log('Table created successfully.');
+    } catch (error) {
+      console.error('Error creating table:', error);
+    }
   }
 
   protected abstract tableName: string;

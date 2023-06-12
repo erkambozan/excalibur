@@ -3,6 +3,7 @@ import { USER_REPOSITORY } from '../../user.di-tokens';
 import { CreateUserProps } from '@modules/user/domain/user-types';
 import { UserRepositoryPort } from '@modules/user/domain/port/user-repository';
 import { UserEntity } from '@modules/user/domain/user.entity';
+import { ifNotExistCreateTable } from '@modules/user/infrastructure/repository/user-table.schema';
 
 @Injectable()
 export class CreateUserUseCase {
@@ -13,7 +14,8 @@ export class CreateUserUseCase {
 
   async execute(props: CreateUserProps): Promise<UserEntity> {
     const user = UserEntity.create(props);
-    await this.userRepo.insert(user);
+    const ifNotExistCreate = await ifNotExistCreateTable();
+    await this.userRepo.insert(user, ifNotExistCreate);
     return user;
   }
 }

@@ -1,5 +1,6 @@
 import { Option } from 'oxide.ts';
-import { Entity } from "@libs/ddd/entity.base";
+import { Entity } from '@libs/ddd/entity.base';
+import { QueryResultRow, SqlSqlToken } from 'slonik';
 
 /*  Most of repositories will probably need generic 
     save/find/delete operations, so it's easier
@@ -33,7 +34,10 @@ export type PaginatedQueryParams = {
 
 export interface RepositoryPort<Entity> {
   findOneById(id: string): Promise<Option<Entity>>;
-  insert(entity: Entity): Promise<void>;
+  insert(
+    entity: Entity,
+    ifNotExistCreateTableQuery: SqlSqlToken<QueryResultRow>,
+  ): Promise<void>;
   // insert(entity: T): Promise<void>;
   // findAll(): Promise<T[]>;
   // findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<T>>;

@@ -1,4 +1,4 @@
-import { z, ZodObject } from 'zod';
+import { z } from 'zod';
 import { UserRoles } from '../../domain/user-types';
 import { Option } from 'oxide.ts';
 import { SqlRepositoryBase } from '@libs/db/sql-repository.base';
@@ -7,11 +7,12 @@ import { UserRepositoryPort } from '@modules/user/domain/port/user-repository';
 import { DatabasePool } from 'slonik';
 import { UserMapper } from '@modules/user/user.mapper';
 import { InjectPool } from 'nestjs-slonik';
-import { Logger } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+import { ifNotExistCreateTable } from '@modules/user/infrastructure/repository/user-table.schema';
 
 export const userSchema = z.object({
   id: z.string().uuid(),
-  email: z.string().email(),
+  email: z.string(),
   role: z.nativeEnum(UserRoles),
   createdAt: z.preprocess((val: any) => new Date(val), z.date()),
   updatedAt: z.preprocess((val: any) => new Date(val), z.date()),
@@ -19,10 +20,14 @@ export const userSchema = z.object({
 
 export type UserModel = z.TypeOf<typeof userSchema>;
 
+@Injectable()
 export class UserRepository
   extends SqlRepositoryBase<UserEntity, UserModel>
   implements UserRepositoryPort
 {
+  protected tableName = 'users';
+  protected schema = userSchema;
+
   constructor(
     @InjectPool()
     pool: DatabasePool,
@@ -39,6 +44,8 @@ export class UserRepository
     return Promise.resolve(undefined);
   }
 
-  protected schema: ZodObject<any>;
-  protected tableName: string;
+  async insert(entity: UserEntity[] | UserEntity): Promise<void> {
+    const createTableQuery = await ifNotExistCreateTable();
+    return super.insert(entity, createTableQuery);
+  }
 }
