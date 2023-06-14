@@ -4,7 +4,7 @@ import { Option } from 'oxide.ts';
 import { SqlRepositoryBase } from '@libs/db/sql-repository.base';
 import { UserEntity } from '@modules/user/domain/user.entity';
 import { UserRepositoryPort } from '@modules/user/domain/port/user-repository';
-import { DatabasePool } from 'slonik';
+import { DatabasePool, sql } from 'slonik';
 import { UserMapper } from '@modules/user/user.mapper';
 import { InjectPool } from 'nestjs-slonik';
 import { Injectable, Logger } from '@nestjs/common';
@@ -13,6 +13,11 @@ import { ifNotExistCreateTable } from '@modules/user/infrastructure/repository/u
 export const userSchema = z.object({
   id: z.string().uuid(),
   email: z.string(),
+  userName: z.string(),
+  password: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  phone: z.string(),
   role: z.nativeEnum(UserRoles),
   createdAt: z.preprocess((val: any) => new Date(val), z.date()),
   updatedAt: z.preprocess((val: any) => new Date(val), z.date()),
@@ -27,6 +32,7 @@ export class UserRepository
 {
   protected tableName = 'users';
   protected schema = userSchema;
+  protected tableStructure = ifNotExistCreateTable();
 
   constructor(
     @InjectPool()
@@ -44,8 +50,24 @@ export class UserRepository
     return Promise.resolve(undefined);
   }
 
-  async insert(entity: UserEntity[] | UserEntity): Promise<void> {
-    const createTableQuery = await ifNotExistCreateTable();
-    return super.insert(entity, createTableQuery);
+  async insert(entity: UserEntity[] | UserEntity): Promise<boolean> {
+    return super.insert(entity);
+  }
+
+  async findOneByUsername(userName: string): Promise<UserEntity> {
+    const query = sql`SELECT * FROM ${sql.identifier([
+      this.tableName,
+    ])} WHERE "userName" = ${userName}`;
+
+    try {
+      const userRow = await this.pool.one(query);
+      return this.mapper.toDomain(userRow);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  findAll(): Promise<any[]> {
+    return Promise.resolve([]);
   }
 }

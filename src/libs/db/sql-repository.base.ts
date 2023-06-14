@@ -25,7 +25,12 @@ export abstract class SqlRepositoryBase<
   DbModel extends ObjectLiteral,
 > implements RepositoryPort<any>
 {
-  protected constructor(
+  protected abstract tableName: string;
+
+  protected abstract schema: ZodObject<any>;
+
+  protected abstract tableStructure: SqlSqlToken<QueryResultRow>;
+  public constructor(
     private readonly _pool: DatabasePool,
     protected readonly mapper: Mapper<Aggregate, DbModel>,
     protected readonly logger: LoggerPort,
@@ -40,17 +45,14 @@ export abstract class SqlRepositoryBase<
     return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
   }
 
-  async insert(
-    entity: Aggregate | Aggregate[],
-    ifNotExistCreateTableQuery: SqlSqlToken<QueryResultRow>,
-  ): Promise<void> {
+  async insert(entity: Aggregate | Aggregate[]): Promise<boolean> {
     const entities = Array.isArray(entity) ? entity : [entity];
     const records = entities.map((entity) => this.mapper.toPersistence(entity));
     const query = this.generateInsertQuery(records);
 
     try {
-      await this.ifNotExistCreateTable(ifNotExistCreateTableQuery);
       await this.writeQuery(query, entities);
+      return true;
     } catch (error) {
       if (error instanceof UniqueIntegrityConstraintViolationError) {
         this.logger.debug(
@@ -62,8 +64,6 @@ export abstract class SqlRepositoryBase<
       }
       throw error;
     }
-
-    return Promise.resolve(undefined);
   }
 
   protected get pool(): DatabasePool | DatabaseTransactionConnection {
@@ -139,7 +139,7 @@ export abstract class SqlRepositoryBase<
     }
   }
 
-  protected abstract tableName: string;
-
-  protected abstract schema: ZodObject<any>;
+  findAll(): Promise<any[]> {
+    return Promise.resolve([]);
+  }
 }

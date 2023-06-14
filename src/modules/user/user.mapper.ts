@@ -5,6 +5,7 @@ import {
   userSchema,
 } from '@modules/user/infrastructure/adapter/user-repository-db';
 import { UserResponseDto } from '@modules/user/domain/commands/dto/user-response';
+import { UserProps } from '@modules/user/domain/user-types';
 
 export class UserMapper
   implements Mapper<UserEntity, UserModel, UserResponseDto>
@@ -16,6 +17,11 @@ export class UserMapper
       createdAt: copy.createdAt,
       updatedAt: copy.updatedAt,
       email: copy.email,
+      userName: copy.userName,
+      firstName: copy.firstName,
+      lastName: copy.lastName,
+      password: copy.password,
+      phone: copy.email,
       role: copy.role,
     };
     return userSchema.parse(record);
@@ -28,6 +34,11 @@ export class UserMapper
       updatedAt: new Date(record.updatedAt),
       props: {
         email: record.email,
+        userName: record.userName,
+        firstName: record.firstName,
+        lastName: record.lastName,
+        password: record.password,
+        phone: record.phone,
         role: record.role,
       },
     });
@@ -39,5 +50,9 @@ export class UserMapper
     const response = new UserResponseDto(entity);
     response.email = props.email;
     return response;
+  }
+
+  toEntity(id: string, props: UserProps): UserEntity {
+    return new UserEntity({ id, props });
   }
 }
