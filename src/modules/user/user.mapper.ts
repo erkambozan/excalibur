@@ -1,11 +1,8 @@
 import { Mapper } from '@libs/ddd/mapper.interface';
 import { UserEntity } from '@modules/user/domain/user.entity';
-import {
-  UserModel,
-  userSchema,
-} from '@modules/user/infrastructure/adapter/user-repository-db';
 import { UserResponseDto } from '@modules/user/domain/commands/dto/user-response';
 import { UserProps } from '@modules/user/domain/user-types';
+import { UserModel, userSchema } from '@modules/user/domain/model/user';
 
 export class UserMapper
   implements Mapper<UserEntity, UserModel, UserResponseDto>

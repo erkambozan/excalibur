@@ -4,6 +4,7 @@ import { postgresConnectionUri } from '@config/database.config';
 import { UserModule } from '@modules/user/user.module';
 import { RequestContextModule } from 'nestjs-request-context';
 import { AuthModule } from '@modules/auth/auth.module';
+import { TypeModule } from '@modules/types/type.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AuthModule } from '@modules/auth/auth.module';
     // Modules
     UserModule,
     AuthModule,
+    TypeModule,
   ],
   controllers: [],
   providers: [],

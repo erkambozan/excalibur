@@ -1,6 +1,6 @@
 import { Controller, HttpStatus, Post, Body } from '@nestjs/common';
 import { routesV1 } from '@config/app.routes';
-import { CreateUserUseCase } from '@modules/user/domain/usecases/create-user.use-case';
+import { CreateUserUseCase } from '@modules/user/domain/usecase/create-user.use-case';
 import { IdResponse } from '@libs/api/id.response.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserRequestDto } from '@modules/user/domain/commands/dto/user-request';

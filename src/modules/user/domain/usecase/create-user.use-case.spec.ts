@@ -1,5 +1,5 @@
 import { InMemoryUserRepository } from '@modules/user/infrastructure/adapter/in-memory-user.repository';
-import { CreateUserUseCase } from '@modules/user/domain/usecases/create-user.use-case';
+import { CreateUserUseCase } from '@modules/user/domain/usecase/create-user.use-case';
 import { Test, TestingModule } from '@nestjs/testing';
 import { USER_REPOSITORY } from '@modules/user/user.di-tokens';
 import { userEntityDataBuilder } from '@modules/user/data-builders/user.data-builder';

@@ -1,34 +1,44 @@
-export type AggregateID = string;
+export type AggregateID = any;
 
 export interface BaseEntityProps {
   id: AggregateID;
   createdAt: Date;
   updatedAt: Date;
+  isActive: boolean;
+  isDeleted: boolean;
 }
 
 export interface CreateEntityProps<T> {
-  id: AggregateID;
+  id?: AggregateID;
   props: T;
   createdAt?: Date;
   updatedAt?: Date;
+  isActive?: boolean;
+  isDeleted?: boolean;
 }
 
 export abstract class Entity<EntityProps> {
   protected abstract _id: AggregateID;
   private readonly _createdAt: Date;
   private _updatedAt: Date;
+  protected readonly isActive: boolean;
+  protected readonly isDeleted: boolean;
   protected readonly props: EntityProps;
 
   constructor({
     id,
     createdAt,
     updatedAt,
+    isActive,
+    isDeleted,
     props,
   }: CreateEntityProps<EntityProps>) {
     this.setId(id);
     const now = new Date();
     this._createdAt = createdAt || now;
     this._updatedAt = updatedAt || now;
+    this.isActive = isActive || true;
+    this.isDeleted = isDeleted || false;
     this.props = props;
   }
 
@@ -45,6 +55,8 @@ export abstract class Entity<EntityProps> {
       id: this._id,
       createdAt: this._createdAt,
       updatedAt: this._updatedAt,
+      isActive: this.isActive,
+      isDeleted: this.isDeleted,
       ...this.props,
     };
     return Object.freeze(propsCopy);

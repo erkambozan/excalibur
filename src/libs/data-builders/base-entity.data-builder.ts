@@ -6,6 +6,8 @@ export const baseEntityDataBuilder = (base = {}): BaseEntityProps => {
     id: faker.string.uuid(),
     createdAt: faker.date.past(),
     updatedAt: faker.date.recent(),
+    isActive: true,
+    isDeleted: false,
   };
   return Object.assign({}, { ...template, ...base });
 };

@@ -1,5 +1,5 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { FindOneByUsernameUseCase } from '@modules/user/domain/usecases/find-one-by-username.use-case';
+import { FindOneByUsernameUseCase } from '@modules/user/domain/usecase/find-one-by-username.use-case';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { NotFoundException } from '@libs/exceptions';

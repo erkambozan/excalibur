@@ -1,16 +1,13 @@
-import {
-  UserModel,
-  UserRepository,
-} from '@modules/user/infrastructure/adapter/user-repository-db';
 import { SqlRepositoryBase } from '@libs/db/sql-repository.base';
 import { UserEntity } from '@modules/user/domain/user.entity';
-import { UserRepositoryPort } from '@modules/user/domain/port/user-repository';
+import { UserRepositoryPort } from '@modules/user/domain/port/user-repository.port';
 import { ZodObject } from 'zod';
 import { QueryResultRow, SqlSqlToken } from 'slonik';
 import { userEntityDataBuilder } from '@modules/user/data-builders/user.data-builder';
 import { baseEntityDataBuilder } from '@libs/data-builders/base-entity.data-builder';
 import { BaseEntityProps } from '@libs/ddd/entity.base';
 import { UserProps } from '@modules/user/domain/user-types';
+import { UserModel } from '@modules/user/domain/model/user';
 
 export class InMemoryUserRepository
   extends SqlRepositoryBase<UserEntity, UserModel>

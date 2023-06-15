@@ -1,5 +1,5 @@
 import { UserRepository } from '@modules/user/infrastructure/adapter/user-repository-db';
-import { FindOneByUsernameUseCase } from '@modules/user/domain/usecases/find-one-by-username.use-case';
+import { FindOneByUsernameUseCase } from '@modules/user/domain/usecase/find-one-by-username.use-case';
 import { Test } from '@nestjs/testing';
 import { USER_REPOSITORY } from '@modules/user/user.di-tokens';
 import { InMemoryUserRepository } from '@modules/user/infrastructure/adapter/in-memory-user.repository';
