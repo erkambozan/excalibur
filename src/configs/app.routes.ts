@@ -1,7 +1,7 @@
 // Root
 const authRoot = 'auth';
 const usersRoot = 'users';
-const hierarchies = 'hierarchies';
+const hierarchy = 'hierarchy';
 const typesRoot = 'types';
 const hierarchyTypesRoot = 'hierarchy';
 const workTypesRoot = 'work';
@@ -21,10 +21,10 @@ export const routesV1 = {
     create: `/${usersRoot}/create`,
     delete: `/${usersRoot}/:id`,
   },
-  hierarchies: {
-    root: hierarchies,
-    add: `/${hierarchies}/add`,
-    delete: `/${hierarchies}/:id`,
+  hierarchy: {
+    root: hierarchy,
+    create: `/${hierarchy}/create`,
+    delete: `/${hierarchy}/:id`,
   },
   type: {
     root: typesRoot,

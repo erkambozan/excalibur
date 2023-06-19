@@ -5,6 +5,7 @@ import { UserModule } from '@modules/user/user.module';
 import { RequestContextModule } from 'nestjs-request-context';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TypeModule } from '@modules/types/type.module';
+import { HierarchyModule } from '@modules/hierarchy/hierarchy.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TypeModule } from '@modules/types/type.module';
     UserModule,
     AuthModule,
     TypeModule,
+    HierarchyModule,
   ],
   controllers: [],
   providers: [],

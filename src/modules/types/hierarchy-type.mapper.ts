@@ -5,7 +5,6 @@ import {
   hierarchyTypeSchema,
 } from '@modules/types/domain/model/hierarchy-type';
 import { HierarchyTypeResponse } from '@modules/types/domain/commands/dto/hierarchy-type.response';
-
 import { HierarchyTypeProps } from '@modules/types/domain/hierarchy-type';
 
 export class HierarchyTypeMapper

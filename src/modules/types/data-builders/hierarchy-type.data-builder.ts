@@ -1,9 +1,6 @@
 import { HierarchyTypeProps } from '@modules/types/domain/hierarchy-type';
-import { BaseEntityProps } from '@libs/ddd/entity.base';
 
-export const hierarchyDataBuilder = (
-  baseEntity: BaseEntityProps,
-): HierarchyTypeProps => ({
+export const hierarchyDataBuilder = (baseEntity = {}): HierarchyTypeProps => ({
   ...baseEntity,
   name: 'MAIN',
 });

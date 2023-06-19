@@ -1,6 +1,4 @@
 import { Option } from 'oxide.ts';
-import { Entity } from '@libs/ddd/entity.base';
-import { QueryResultRow, SqlSqlToken } from 'slonik';
 
 /*  Most of repositories will probably need generic 
     save/find/delete operations, so it's easier

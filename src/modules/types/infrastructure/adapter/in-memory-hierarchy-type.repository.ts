@@ -6,11 +6,15 @@ import { HierarchyTypeModel } from '@modules/types/domain/model/hierarchy-type';
 import { ZodObject } from 'zod';
 import { QueryResultRow, SqlSqlToken } from 'slonik';
 import { HierarchyTypeRepositoryPort } from '@modules/types/domain/port/hierarchy-type.repository.port';
+import { HierarchyTypeProps } from '@modules/types/domain/hierarchy-type';
 
 export class InMemoryHierarchyTypeRepository
   extends SqlRepositoryBase<HierarchyTypeEntity, HierarchyTypeModel>
   implements HierarchyTypeRepositoryPort
 {
+  get hierarchyTypeData(): HierarchyTypeProps[] {
+    return this._hierarchyTypeData;
+  }
   protected schema: ZodObject<any>;
   protected tableName: string;
   protected tableStructure: SqlSqlToken<QueryResultRow>;
@@ -21,6 +25,12 @@ export class InMemoryHierarchyTypeRepository
   async insert(
     entity: HierarchyTypeEntity[] | HierarchyTypeEntity,
   ): Promise<boolean> {
+    entity = Array.isArray(entity) ? entity : [entity];
+    this._hierarchyTypeData.push(entity[0].getProps());
     return Promise.resolve(true);
+  }
+
+  findByName(name: string): Promise<HierarchyTypeEntity | null> {
+    return Promise.resolve(undefined);
   }
 }
