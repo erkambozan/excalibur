@@ -7,13 +7,12 @@ import {
   IdentifierSqlToken,
   MixedRow,
   PrimitiveValueExpression,
-  QueryResult,
   QueryResultRow,
   sql,
   SqlSqlToken,
   UniqueIntegrityConstraintViolationError,
 } from 'slonik';
-import { TypeOf, ZodObject, ZodTypeAny } from 'zod';
+import { ZodObject } from 'zod';
 import { RequestContextService } from '@libs/application/context/AppRequestContext';
 import { AggregateRoot } from '@libs/ddd/aggregate-root.base';
 import { ObjectLiteral } from '@libs/types';
@@ -45,14 +44,16 @@ export abstract class SqlRepositoryBase<
     return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
   }
 
-  async insert(entity: Aggregate | Aggregate[]): Promise<boolean> {
+  async insert(
+    entity: Aggregate | Aggregate[],
+  ): Promise<Aggregate[] | Aggregate> {
     const entities = Array.isArray(entity) ? entity : [entity];
     const records = entities.map((entity) => this.mapper.toPersistence(entity));
     const query = this.generateInsertQuery(records);
 
     try {
-      await this.writeQuery(query, entities);
-      return true;
+      const result = await this.writeQuery(query, entities);
+      return result[0];
     } catch (error) {
       if (error instanceof UniqueIntegrityConstraintViolationError) {
         this.logger.debug(
@@ -77,15 +78,7 @@ export abstract class SqlRepositoryBase<
       T extends MixedRow ? T : Record<string, PrimitiveValueExpression>
     >,
     entity: Aggregate | Aggregate[],
-  ): Promise<
-    QueryResult<
-      T extends MixedRow
-        ? T extends ZodTypeAny
-          ? TypeOf<ZodTypeAny & MixedRow & T>
-          : T
-        : T
-    >
-  > {
+  ): Promise<Aggregate | Aggregate[]> {
     const entities = Array.isArray(entity) ? entity : [entity];
     const entityIds = entities.map((e) => e.id);
 
@@ -95,7 +88,9 @@ export abstract class SqlRepositoryBase<
       } entities to "${this.tableName}" table: ${entityIds}`,
     );
 
-    return await this.pool.query(sql);
+    await this.pool.query(sql);
+
+    return entities;
   }
 
   protected generateInsertQuery(
@@ -139,7 +134,11 @@ export abstract class SqlRepositoryBase<
     }
   }
 
-  findAll(): Promise<any[]> {
-    return Promise.resolve([]);
+  async findAll(): Promise<Aggregate[]> {
+    const query = sql`SELECT * FROM ${sql.identifier([this.tableName])}`;
+
+    const result = await this.pool.query(query);
+
+    return result.rows.map((row) => this.mapper.toDomain(row));
   }
 }

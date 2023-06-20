@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const hierarchySchema = z.object({
   id: z.number().optional(),
-  parentId: z.number(),
+  parentId: z.number().optional(),
   name: z.string(),
   type: z.string(),
   parentPath: z.string().optional(),

@@ -32,8 +32,8 @@ export class InMemoryUserRepository
     return Promise.resolve(undefined);
   }
 
-  async insert(entity: UserEntity[] | UserEntity): Promise<boolean> {
-    return Promise.resolve(true);
+  async insert(entity: UserEntity[] | UserEntity): Promise<UserEntity> {
+    return Promise.resolve(entity as UserEntity);
   }
 
   findOneByUsername(userName: string): Promise<UserEntity | null> {

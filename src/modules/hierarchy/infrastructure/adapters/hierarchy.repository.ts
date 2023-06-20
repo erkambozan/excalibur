@@ -28,8 +28,10 @@ export class HierarchyRepository
     super(pool, mapper, new Logger(HierarchyRepository.name));
   }
 
-  async insert(entity: HierarchyEntity[] | HierarchyEntity): Promise<boolean> {
-    return await super.insert(entity);
+  async insert(
+    entity: HierarchyEntity[] | HierarchyEntity,
+  ): Promise<HierarchyEntity[] | HierarchyEntity> {
+    return await super.insert(entity as HierarchyEntity);
   }
 
   findByParentPath(path: string): Promise<HierarchyEntity> {

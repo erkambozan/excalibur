@@ -4,6 +4,7 @@ import { HierarchyMapper } from '@modules/hierarchy/hierarchy.mapper';
 import { HierarchyController } from '@modules/hierarchy/domain/commands/controller/hierarchy.controller';
 import { HIERARCHY_REPOSITORY } from '@modules/hierarchy/hierarchy.di-tokens';
 import { CreateHierarchyUseCase } from '@modules/hierarchy/domain/usecase/create-hierarchy.use-case';
+import { ListHierarchyUseCase } from '@modules/hierarchy/domain/usecase/list-hierarchy.use-case';
 
 const providers = [
   {
@@ -11,6 +12,7 @@ const providers = [
     useClass: HierarchyRepository,
   },
   CreateHierarchyUseCase,
+  ListHierarchyUseCase,
 ];
 
 const mappers: Provider[] = [HierarchyMapper];

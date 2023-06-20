@@ -12,7 +12,9 @@ export class CreateHierarchyTypeUseCase {
     private readonly hierarchyTypeRepository: HierarchyTypeRepositoryPort,
   ) {}
 
-  async execute(props: CreateHierarchyTypeProps): Promise<boolean | Error> {
+  async execute(
+    props: CreateHierarchyTypeProps,
+  ): Promise<HierarchyTypeEntity[] | HierarchyTypeEntity | Error> {
     const hierarchyType = HierarchyTypeEntity.create(props);
     const isExist = await this.hierarchyTypeRepository.findByName(props.name);
     if (isExist) {

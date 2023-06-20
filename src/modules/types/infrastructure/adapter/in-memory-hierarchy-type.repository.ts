@@ -24,10 +24,10 @@ export class InMemoryHierarchyTypeRepository
 
   async insert(
     entity: HierarchyTypeEntity[] | HierarchyTypeEntity,
-  ): Promise<boolean> {
+  ): Promise<HierarchyTypeEntity[] | HierarchyTypeEntity> {
     entity = Array.isArray(entity) ? entity : [entity];
     this._hierarchyTypeData.push(entity[0].getProps());
-    return Promise.resolve(true);
+    return Promise.resolve(entity);
   }
 
   findByName(name: string): Promise<HierarchyTypeEntity | null> {

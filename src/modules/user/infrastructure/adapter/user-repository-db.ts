@@ -38,7 +38,9 @@ export class UserRepository
     return Promise.resolve(undefined);
   }
 
-  async insert(entity: UserEntity[] | UserEntity): Promise<boolean> {
+  async insert(
+    entity: UserEntity[] | UserEntity,
+  ): Promise<UserEntity[] | UserEntity> {
     return super.insert(entity);
   }
 

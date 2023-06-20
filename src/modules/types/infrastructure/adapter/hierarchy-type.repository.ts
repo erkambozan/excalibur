@@ -30,7 +30,7 @@ export class HierarchyTypeRepository
 
   async insert(
     entity: HierarchyTypeEntity[] | HierarchyTypeEntity,
-  ): Promise<boolean> {
+  ): Promise<HierarchyTypeEntity[] | HierarchyTypeEntity> {
     return super.insert(entity);
   }
 

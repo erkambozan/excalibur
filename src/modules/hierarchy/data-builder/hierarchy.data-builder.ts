@@ -7,7 +7,7 @@ export const hierarchyDataBuilder = (
   ...baseEntity,
   name: 'Tommy Life',
   type: 'MAIN',
-  parentId: null,
-  parentPath: null,
-  path: null,
+  parentId: 1,
+  parentPath: '1',
+  path: '1.1',
 });

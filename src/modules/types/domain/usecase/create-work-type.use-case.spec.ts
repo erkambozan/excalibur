@@ -4,6 +4,8 @@ import { CreateWorkTypeUseCase } from '@modules/types/domain/usecase/create-work
 import { WorkTypeMapper } from '@modules/types/work-type.mapper';
 import { InMemoryWorkTypeRepository } from '@modules/types/infrastructure/adapter/in-memory-work-type.repository';
 import { ConflictException } from '@libs/exceptions';
+import { workTypeDataBuilder } from '@modules/types/data-builders/work-type.data-builder';
+import { WorkTypeEntity } from '@modules/types/domain/entity/work-type.entity';
 
 describe('CreateWorkTypeUseCase', () => {
   let workTypeRepository: InMemoryWorkTypeRepository;
@@ -33,22 +35,15 @@ describe('CreateWorkTypeUseCase', () => {
   });
 
   it('should create a work type', async () => {
-    const workTypeName = 'work type name';
-    const workType = await createWorkTypeUseCase.execute({
-      name: workTypeName,
-    });
+    const workType = workTypeDataBuilder();
+    const workEntity = WorkTypeEntity.create(workType);
+    const actual = await createWorkTypeUseCase.execute(workType);
 
-    const isAdded = workTypeRepository.workTypeData.find(
-      (wt) => wt.name === workTypeName,
-    );
-
-    expect(workType).toBe(true);
-    expect(isAdded.name).toStrictEqual(workTypeName);
+    expect(actual).toStrictEqual(workEntity);
   });
 
   it('should not create a work type with the same name', async () => {
     const workTypeName = 'work type name';
-    workTypeRepository.workTypeData.push({ name: workTypeName });
     const workType = await createWorkTypeUseCase.execute({
       name: workTypeName,
     });

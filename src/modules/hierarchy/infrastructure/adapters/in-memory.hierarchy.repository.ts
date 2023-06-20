@@ -18,10 +18,12 @@ export class InMemoryHierarchyRepository
   baseEntity = baseEntityDataBuilder({ id: '1' });
   hierarchyData = [hierarchyDataBuilder(this.baseEntity)];
 
-  async insert(entity: HierarchyEntity[] | HierarchyEntity): Promise<boolean> {
+  async insert(
+    entity: HierarchyEntity[] | HierarchyEntity,
+  ): Promise<HierarchyEntity[] | HierarchyEntity> {
     entity = Array.isArray(entity) ? entity : [entity];
     this.hierarchyData.push(entity[0].getProps());
-    return true;
+    return entity;
   }
 
   findByParentPath(path: string): Promise<HierarchyEntity> {

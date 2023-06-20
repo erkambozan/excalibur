@@ -12,7 +12,9 @@ export class CreateUserUseCase {
     private readonly userRepo: UserRepositoryPort,
   ) {}
 
-  async execute(props: CreateUserProps): Promise<UserEntity | Error> {
+  async execute(
+    props: CreateUserProps,
+  ): Promise<UserEntity[] | UserEntity | Error> {
     props.password = await this.hashPassword(props.password);
     const user = UserEntity.create(props);
     const isExist = await this.userRepo.findOneByUsername(props.userName);
@@ -20,7 +22,7 @@ export class CreateUserUseCase {
       return new Error(`User with username ${props.userName} already exists`);
     }
     const result = await this.userRepo.insert(user);
-    return result == true ? user : undefined;
+    return result ?? undefined;
   }
 
   async hashPassword(password: string): Promise<string> {

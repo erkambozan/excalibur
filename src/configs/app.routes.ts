@@ -24,7 +24,7 @@ export const routesV1 = {
   hierarchy: {
     root: hierarchy,
     create: `/${hierarchy}/create`,
-    delete: `/${hierarchy}/:id`,
+    list: `/${hierarchy}/list`,
   },
   type: {
     root: typesRoot,

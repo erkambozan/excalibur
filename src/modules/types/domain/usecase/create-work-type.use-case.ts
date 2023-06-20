@@ -10,7 +10,9 @@ export class CreateWorkTypeUseCase {
     @Inject(WORK_TYPE_REPOSITORY)
     private readonly workTypeRepository: WorkTypeRepositoryPort,
   ) {}
-  async execute(props: CreateWorkTypeProps): Promise<boolean | Error> {
+  async execute(
+    props: CreateWorkTypeProps,
+  ): Promise<WorkTypeEntity[] | WorkTypeEntity | Error> {
     const workType = WorkTypeEntity.create(props);
     const isExist = await this.workTypeRepository.findByName(props.name);
     if (isExist) {

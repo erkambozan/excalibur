@@ -18,10 +18,10 @@ export class InMemoryWorkTypeRepository
   baseEntity = baseEntityDataBuilder();
   workTypeData = [workTypeDataBuilder(this.baseEntity)];
 
-  async insert(entity: WorkTypeEntity[] | WorkTypeEntity): Promise<boolean> {
-    entity = Array.isArray(entity) ? entity : [entity];
-    this.workTypeData.push(entity[0].getProps());
-    return Promise.resolve(true);
+  async insert(
+    entity: WorkTypeEntity[] | WorkTypeEntity,
+  ): Promise<WorkTypeEntity> {
+    return Promise.resolve(entity as WorkTypeEntity);
   }
 
   findByName(name: string): Promise<WorkTypeEntity | null> {

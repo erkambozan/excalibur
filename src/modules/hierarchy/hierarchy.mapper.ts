@@ -5,25 +5,37 @@ import {
   hierarchySchema,
 } from '@modules/hierarchy/domain/model/hieararchy';
 import { HierarchyResponse } from '@modules/hierarchy/domain/commands/dto/hierarchy.response';
-import { HierarchyTypeModel } from '@modules/types/domain/model/hierarchy-type';
 
 export class HierarchyMapper
   implements Mapper<HierarchyEntity, HierarchyModel, HierarchyResponse>
 {
   toDomain(record: HierarchyModel): HierarchyEntity {
+    const {
+      id,
+      parentId,
+      name,
+      type,
+      parentPath,
+      path,
+      createdAt,
+      updatedAt,
+      isActive,
+      isDeleted,
+    } = record;
+
     return new HierarchyEntity({
-      id: record.id,
-      createdAt: new Date(record.createdAt),
-      updatedAt: new Date(record.updatedAt),
-      isActive: record.isActive,
-      isDeleted: record.isDeleted,
+      id,
       props: {
-        parentId: record.parentId,
-        name: record.name,
-        type: record.type,
-        parentPath: record.parentPath,
-        path: record.path,
+        parentId,
+        name,
+        type,
+        parentPath,
+        path,
       },
+      createdAt: new Date(createdAt),
+      updatedAt: new Date(updatedAt),
+      isActive,
+      isDeleted,
     });
   }
 
@@ -49,7 +61,20 @@ export class HierarchyMapper
     return hierarchySchema.parse(record);
   }
 
-  toResponse(entity: HierarchyEntity): HierarchyResponse {
-    return undefined;
+  toResponse(
+    entity: HierarchyEntity[] | HierarchyEntity,
+  ): HierarchyResponse[] | HierarchyResponse {
+    if (Array.isArray(entity)) {
+      return entity.map((item) => {
+        const props = item.getProps();
+        const response = new HierarchyResponse(item);
+        response.parentId = props.parentId;
+        response.name = props.name;
+        response.type = props.type;
+        response.path = props.path;
+        return response;
+      });
+    }
+    return new HierarchyResponse(entity);
   }
 }

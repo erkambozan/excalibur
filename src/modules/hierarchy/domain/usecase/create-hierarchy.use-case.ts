@@ -14,7 +14,9 @@ export class CreateHierarchyUseCase {
     private readonly hierarchyRepository: HierarchyRepositoryPort,
   ) {}
 
-  async execute(props: CreateHierarchyProps): Promise<boolean> {
+  async execute(
+    props: CreateHierarchyProps,
+  ): Promise<HierarchyEntity[] | HierarchyEntity> {
     if (!props.parentPath) {
       props.path = await this.firstPath();
     } else {

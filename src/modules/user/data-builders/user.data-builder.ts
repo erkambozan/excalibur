@@ -1,10 +1,7 @@
 import { faker as faker } from '@faker-js/faker';
 import { UserProps, UserRoles } from '@modules/user/domain/user-types';
-import { BaseEntityProps } from '@libs/ddd/entity.base';
 
-export const userEntityDataBuilder = (
-  baseEntity: BaseEntityProps,
-): UserProps => {
+export const userEntityDataBuilder = (baseEntity = {}): UserProps => {
   return {
     ...baseEntity,
     email: faker.internet.email(),
