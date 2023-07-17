@@ -1,10 +1,12 @@
 // Root
 const authRoot = 'auth';
 const usersRoot = 'users';
-const hierarchy = 'hierarchy';
+const hierarchyRoot = 'hierarchy';
 const typesRoot = 'types';
 const hierarchyTypesRoot = 'hierarchy';
 const workTypesRoot = 'work';
+const permissionRoot = 'permission';
+const roleRoot = 'role';
 
 // Api Versions
 const v1 = 'v1';
@@ -22,9 +24,9 @@ export const routesV1 = {
     delete: `/${usersRoot}/:id`,
   },
   hierarchy: {
-    root: hierarchy,
-    create: `/${hierarchy}/create`,
-    list: `/${hierarchy}/list`,
+    root: hierarchyRoot,
+    create: `/${hierarchyRoot}/create`,
+    list: `/${hierarchyRoot}/list`,
   },
   type: {
     root: typesRoot,
@@ -38,5 +40,13 @@ export const routesV1 = {
       create: `${typesRoot}/${workTypesRoot}/create`,
       delete: `${typesRoot}/${workTypesRoot}/:id`,
     },
+  },
+  permission: {
+    root: permissionRoot,
+    create: `/${permissionRoot}/create`,
+  },
+  role: {
+    root: roleRoot,
+    create: `/${roleRoot}/create`,
   },
 };

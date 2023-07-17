@@ -3,6 +3,7 @@ import { FindOneByUsernameUseCase } from '@modules/user/domain/usecase/find-one-
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { NotFoundException } from '@libs/exceptions';
+import { LoginResponseDto } from '@modules/auth/domain/commands/dto/login.response.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +13,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signIn(userName: string, password: string): Promise<any> {
+  async signIn(userName: string, password: string): Promise<LoginResponseDto> {
     const user = await this.findOneByUserNameUseCase.execute(userName);
 
     if (!user) throw new NotFoundException();
@@ -21,8 +22,9 @@ export class AuthService {
     if (!match) throw new UnauthorizedException();
 
     const payload = { sub: user.id, username: user.getProps().userName };
-    return {
-      access_token: await this.jwtService.signAsync(payload),
-    };
+    const accessToken = await this.jwtService.signAsync(payload);
+    const response = new LoginResponseDto();
+    response.access_token = accessToken;
+    return response;
   }
 }

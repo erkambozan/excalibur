@@ -1,6 +1,8 @@
 import { Logger, Module, Provider } from '@nestjs/common';
 import {
   HIERARCHY_TYPE_REPOSITORY,
+  PERMISSION_REPOSITORY,
+  ROLE_REPOSITORY,
   WORK_TYPE_REPOSITORY,
 } from '@modules/types/types.di-tokens';
 import { HierarchyTypeRepository } from '@modules/types/infrastructure/adapter/hierarchy-type.repository';
@@ -11,17 +13,39 @@ import { HierarchyTypeMapper } from '@modules/types/hierarchy-type.mapper';
 import { WorkTypeMapper } from '@modules/types/work-type.mapper';
 import { CreateHierarchyTypeUseCase } from '@modules/types/domain/usecase/create-hierarchy-type.use-case';
 import { CreateWorkTypeUseCase } from '@modules/types/domain/usecase/create-work-type.use-case';
+import { PermissionRepository } from '@modules/types/infrastructure/adapter/permission.repository';
+import { CreatePermissionUseCase } from '@modules/types/domain/usecase/create-permission.use-case';
+import { PermissionMapper } from '@modules/types/permission.mapper';
+import { RoleRepository } from '@modules/types/infrastructure/adapter/role.repository';
+import { CreateRoleUseCase } from '@modules/types/domain/usecase/create-role.use-case';
+import { RoleMapper } from '@modules/types/role.mapper';
+import { RoleController } from '@modules/types/domain/commands/controllers/http-rest/role.controller';
+import { PermissionController } from '@modules/types/domain/commands/controllers/http-rest/permission.controller';
 
-const httpControllers = [HierarchyTypeController, WorkTypeController];
+const httpControllers = [
+  HierarchyTypeController,
+  WorkTypeController,
+  RoleController,
+  PermissionController,
+];
 
 const providers = [
   { provide: HIERARCHY_TYPE_REPOSITORY, useClass: HierarchyTypeRepository },
   { provide: WORK_TYPE_REPOSITORY, useClass: WorkTypeRepository },
+  { provide: PERMISSION_REPOSITORY, useClass: PermissionRepository },
+  { provide: ROLE_REPOSITORY, useClass: RoleRepository },
   CreateHierarchyTypeUseCase,
   CreateWorkTypeUseCase,
+  CreatePermissionUseCase,
+  CreateRoleUseCase,
 ];
 
-const mappers: Provider[] = [HierarchyTypeMapper, WorkTypeMapper];
+const mappers: Provider[] = [
+  HierarchyTypeMapper,
+  WorkTypeMapper,
+  PermissionMapper,
+  RoleMapper,
+];
 
 @Module({
   imports: [],

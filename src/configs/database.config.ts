@@ -5,7 +5,7 @@ export const databaseConfig = {
   host: 'localhost', //get('DB_HOST').required().asString(),
   port: 5432, //get('DB_PORT').required().asIntPositive(),
   username: 'postgres', //get('DB_USERNAME').required().asString(),
-  password: 'toor', //get('DB_PASSWORD').required().asString(),
+  password: 'postgres', //get('DB_PASSWORD').required().asString(),
   database: 'excalibur', //get('DB_NAME').required().asString(),
 };
 
