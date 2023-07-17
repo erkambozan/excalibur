@@ -7,6 +7,7 @@ const hierarchyTypesRoot = 'hierarchy';
 const workTypesRoot = 'work';
 const permissionRoot = 'permission';
 const roleRoot = 'role';
+const employeeRoot = 'employee';
 
 // Api Versions
 const v1 = 'v1';
@@ -48,5 +49,9 @@ export const routesV1 = {
   role: {
     root: roleRoot,
     create: `/${roleRoot}/create`,
+  },
+  employee: {
+    root: employeeRoot,
+    create: `/${employeeRoot}/create`,
   },
 };

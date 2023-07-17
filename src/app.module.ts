@@ -6,6 +6,7 @@ import { RequestContextModule } from 'nestjs-request-context';
 import { AuthModule } from '@modules/auth/auth.module';
 import { TypeModule } from '@modules/types/type.module';
 import { HierarchyModule } from '@modules/hierarchy/hierarchy.module';
+import { EmployeeModule } from '@modules/employee/employee.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { HierarchyModule } from '@modules/hierarchy/hierarchy.module';
     AuthModule,
     TypeModule,
     HierarchyModule,
+    EmployeeModule,
   ],
   controllers: [],
   providers: [],
