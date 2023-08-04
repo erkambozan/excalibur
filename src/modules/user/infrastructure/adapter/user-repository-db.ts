@@ -57,7 +57,7 @@ export class UserRepository
     }
   }
 
-  findAll(): Promise<any[]> {
-    return Promise.resolve([]);
+  findAll(): Promise<UserEntity[]> {
+    return super.findAll();
   }
 }

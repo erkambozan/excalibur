@@ -36,7 +36,15 @@ export class RoleMapper implements Mapper<RoleEntity, RoleModel, RoleResponse> {
     return roleSchema.parse(record);
   }
 
-  toResponse(entity: RoleEntity): RoleResponse {
-    return undefined;
+  toResponse(entity: RoleEntity | RoleEntity[]): RoleResponse | RoleResponse[] {
+    if (Array.isArray(entity)) {
+      return entity.map((item) => {
+        const props = item.getProps();
+        const response = new RoleResponse(item);
+        response.name = props.name;
+        return response;
+      });
+    }
+    return new RoleResponse(entity);
   }
 }

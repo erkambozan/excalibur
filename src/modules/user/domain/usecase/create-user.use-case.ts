@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateUserProps } from '@modules/user/domain/user-types';
 import { UserRepositoryPort } from '@modules/user/domain/port/user-repository.port';
 import { UserEntity } from '@modules/user/domain/user.entity';
@@ -18,9 +18,12 @@ export class CreateUserUseCase {
     props.password = await this.hashPassword(props.password);
     const user = UserEntity.create(props);
     const isExist = await this.userRepo.findOneByUsername(props.userName);
-    if (isExist) {
-      return new Error(`User with username ${props.userName} already exists`);
-    }
+    if (isExist)
+      throw new HttpException(
+        `User ${props.userName} already exists`,
+        HttpStatus.CONFLICT,
+      );
+
     const result = await this.userRepo.insert(user);
     return result ?? undefined;
   }

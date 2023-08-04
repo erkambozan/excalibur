@@ -2,7 +2,6 @@ import { SqlRepositoryBase } from '@libs/db/sql-repository.base';
 import { DatabasePool } from 'slonik';
 import { InjectPool } from 'nestjs-slonik';
 import { Logger } from '@nestjs/common';
-import { ifNotExistCreateTable } from '@modules/hierarchy/infrastructure/repository/hierarchy-table.schema';
 import { EmployeeEntity } from '@modules/employee/domain/entity/employee-entity';
 import { EmployeeRepositoryPort } from '@modules/employee/domain/port/employee.repository.port';
 import {
@@ -11,6 +10,7 @@ import {
   tableName,
 } from '@modules/employee/domain/model/employee';
 import { EmployeeMapper } from '@modules/employee/employee.mapper';
+import { ifNotExistCreateTable } from '@modules/employee/infrastructure/repository/employee-table.schema';
 
 export class EmployeeRepository
   extends SqlRepositoryBase<EmployeeEntity, EmployeeModel>

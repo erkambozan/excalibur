@@ -23,6 +23,7 @@ export const routesV1 = {
     root: usersRoot,
     create: `/${usersRoot}/create`,
     delete: `/${usersRoot}/:id`,
+    list: `/${usersRoot}/list`,
   },
   hierarchy: {
     root: hierarchyRoot,
@@ -45,13 +46,16 @@ export const routesV1 = {
   permission: {
     root: permissionRoot,
     create: `/${permissionRoot}/create`,
+    list: `/${permissionRoot}/list`,
   },
   role: {
     root: roleRoot,
     create: `/${roleRoot}/create`,
+    list: `/${roleRoot}/list`,
   },
   employee: {
     root: employeeRoot,
     create: `/${employeeRoot}/create`,
+    list: `/${employeeRoot}/list`,
   },
 };

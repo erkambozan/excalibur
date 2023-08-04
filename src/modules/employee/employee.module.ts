@@ -1,25 +1,24 @@
-import { Module, Provider } from '@nestjs/common';
-import { EMPLOYEE_REPOSITORY } from '@modules/employee/employee.di-tokens';
+import { Logger, Module, Provider } from '@nestjs/common';
+import { EmployeeController } from '@modules/employee/domain/commands/controller/employee.controller';
 import { EmployeeRepository } from '@modules/employee/infrastructure/adapters/employee.repository';
 import { CreateEmployeeUseCase } from '@modules/employee/domain/usecase/create-employee.use-case';
-import { EmployeeController } from '@modules/employee/domain/commands/controller/employee.controller';
 import { EmployeeMapper } from '@modules/employee/employee.mapper';
+import { EMPLOYEE_REPOSITORY } from '@modules/employee/employee.di-tokens';
+import { FindAllEmployeeUseCase } from '@modules/employee/domain/usecase/find-all-employee.use-case';
 
-const providers = [
-  {
-    provide: EMPLOYEE_REPOSITORY,
-    useClass: EmployeeRepository,
-  },
+const controllers = [EmployeeController];
+
+const repositories: Provider[] = [
+  { provide: EMPLOYEE_REPOSITORY, useClass: EmployeeRepository },
   CreateEmployeeUseCase,
+  FindAllEmployeeUseCase,
 ];
 
 const mappers: Provider[] = [EmployeeMapper];
 
-const controllers = [EmployeeController];
-
 @Module({
   imports: [],
   controllers: [...controllers],
-  providers: [...providers, ...mappers],
+  providers: [Logger, ...repositories, ...mappers],
 })
 export class EmployeeModule {}

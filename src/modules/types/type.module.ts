@@ -21,6 +21,8 @@ import { CreateRoleUseCase } from '@modules/types/domain/usecase/create-role.use
 import { RoleMapper } from '@modules/types/role.mapper';
 import { RoleController } from '@modules/types/domain/commands/controllers/http-rest/role.controller';
 import { PermissionController } from '@modules/types/domain/commands/controllers/http-rest/permission.controller';
+import { FindAllEmployeeUseCase } from '@modules/employee/domain/usecase/find-all-employee.use-case';
+import { FindAllRolesUseCase } from '@modules/types/domain/usecase/find-all-roles.use-case';
 
 const httpControllers = [
   HierarchyTypeController,
@@ -38,6 +40,7 @@ const providers = [
   CreateWorkTypeUseCase,
   CreatePermissionUseCase,
   CreateRoleUseCase,
+  FindAllRolesUseCase,
 ];
 
 const mappers: Provider[] = [
