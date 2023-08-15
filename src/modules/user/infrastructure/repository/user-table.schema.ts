@@ -10,6 +10,7 @@ export const ifNotExistCreateTable = (): SqlSqlToken<QueryResultRow> => {
         "userName" VARCHAR(255) NOT NULL,
         "password" VARCHAR(255) NOT NULL,
         "phone" VARCHAR(255) NOT NULL,
+        "role" VARCHAR(255) NOT NULL,
         "isActive" BOOLEAN NOT NULL DEFAULT TRUE,
         "isDeleted" BOOLEAN NOT NULL DEFAULT FALSE,
         "createdAt" TIMESTAMP NOT NULL,
