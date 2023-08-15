@@ -6,6 +6,7 @@ import { RoleRequestDto } from '@modules/types/domain/commands/dto/role.request'
 import { CreateRoleUseCase } from '@modules/types/domain/usecase/create-role.use-case';
 import { RoleResponse } from '@modules/types/domain/commands/dto/role.response';
 import { FindAllRolesUseCase } from '@modules/types/domain/usecase/find-all-roles.use-case';
+import { Public } from '@src/modules/auth/decorator';
 
 @Controller(routesV1.version)
 export class RoleController {
@@ -19,6 +20,7 @@ export class RoleController {
     status: HttpStatus.OK,
     type: IdResponse,
   })
+  @Public()
   @Post(routesV1.role.create)
   async create(@Body() requestDto: RoleRequestDto): Promise<any> {
     console.log('requestDto', requestDto);
