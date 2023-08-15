@@ -34,6 +34,7 @@ export interface RepositoryPort<Entity> {
   findOneById(id: string): Promise<Option<Entity>>;
   insert(entity: Entity): Promise<Entity[] | Entity>;
   findAll(): Promise<Entity[]>;
+  removeByNumberId(id: number): Promise<void>;
   // insert(entity: T): Promise<void>;
   // findAll(): Promise<T[]>;
   // findAllPaginated(params: PaginatedQueryParams): Promise<Paginated<T>>;

@@ -2,7 +2,7 @@ import { SqlRepositoryBase } from '@libs/db/sql-repository.base';
 import { DatabasePool } from 'slonik';
 import { InjectPool } from 'nestjs-slonik';
 import { Logger } from '@nestjs/common';
-import { EmployeeEntity } from '@modules/employee/domain/entity/employee-entity';
+import { EmployeeEntity } from '@modules/employee/domain/entity/employee.entity';
 import { EmployeeRepositoryPort } from '@modules/employee/domain/port/employee.repository.port';
 import {
   EmployeeModel,

@@ -17,7 +17,7 @@ import { RequestContextService } from '@libs/application/context/AppRequestConte
 import { AggregateRoot } from '@libs/ddd/aggregate-root.base';
 import { ObjectLiteral } from '@libs/types';
 import { LoggerPort } from '@libs/ports/logger-port';
-import { ConflictException } from '@libs/exceptions';
+import { ConflictException, NotFoundException } from '@libs/exceptions';
 
 export abstract class SqlRepositoryBase<
   Aggregate extends AggregateRoot<any>,
@@ -29,6 +29,7 @@ export abstract class SqlRepositoryBase<
   protected abstract schema: ZodObject<any>;
 
   protected abstract tableStructure: SqlSqlToken<QueryResultRow>;
+
   public constructor(
     private readonly _pool: DatabasePool,
     protected readonly mapper: Mapper<Aggregate, DbModel>,
@@ -36,9 +37,9 @@ export abstract class SqlRepositoryBase<
   ) {}
 
   async findOneById(id: string): Promise<Option<any>> {
-    const query = sql.type(this.schema)`SELECT * FROM ${sql.identifier([
-      this.tableName,
-    ])} WHERE id = ${id}`;
+    const query = sql.type(this.schema)`SELECT *
+                                        FROM ${sql.identifier([this.tableName])}
+                                        WHERE id = ${id}`;
 
     const result = await this.pool.query(query);
     return result.rows[0] ? Some(this.mapper.toDomain(result.rows[0])) : None;
@@ -52,6 +53,7 @@ export abstract class SqlRepositoryBase<
     const query = this.generateInsertQuery(records);
 
     try {
+      await this.pool.query(this.tableStructure);
       const result = await this.writeQuery(query, entities);
       return result[0];
     } catch (error) {
@@ -64,6 +66,21 @@ export abstract class SqlRepositoryBase<
         throw new ConflictException('Record already exists', error);
       }
       throw error;
+    }
+  }
+
+  async removeByNumberId(hierarchyId: number): Promise<void> {
+    try {
+      await this.generateRemoveNumberIdQuery(hierarchyId);
+    } catch (error) {
+      if (error instanceof UniqueIntegrityConstraintViolationError) {
+        this.logger.debug(
+          `[${RequestContextService.getRequestId()}] ${
+            (error.originalError as any).detail
+          }`,
+        );
+        throw new NotFoundException('Record does not exists');
+      }
     }
   }
 
@@ -111,16 +128,18 @@ export abstract class SqlRepositoryBase<
         }
       }
     });
-
-    const query = sql`INSERT INTO ${sql.identifier([
-      this.tableName,
-    ])} (${sql.join(propertyNames, sql`, `)}) VALUES (${sql.join(
-      values,
+    return sql`INSERT INTO ${sql.identifier([this.tableName])} (${sql.join(
+      propertyNames,
       sql`, `,
-    )})`;
+    )})
+               VALUES (${sql.join(values, sql`, `)})`;
+  }
 
-    const parsedQuery = query;
-    return parsedQuery;
+  protected async generateRemoveNumberIdQuery(id: number): Promise<void> {
+    const query = sql`UPDATE ${sql.identifier([this.tableName])}
+                      SET isDeleted = true
+                      WHERE id = ${id}`;
+    await this.pool.query(query);
   }
 
   private async ifNotExistCreateTable(
@@ -135,7 +154,8 @@ export abstract class SqlRepositoryBase<
   }
 
   async findAll(): Promise<Aggregate[]> {
-    const query = sql`SELECT * FROM ${sql.identifier([this.tableName])}`;
+    const query = sql`SELECT *
+                      FROM ${sql.identifier([this.tableName])}`;
 
     const result = await this.pool.query(query);
 

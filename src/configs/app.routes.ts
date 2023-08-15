@@ -8,6 +8,7 @@ const workTypesRoot = 'work';
 const permissionRoot = 'permission';
 const roleRoot = 'role';
 const employeeRoot = 'employee';
+const annualLeaveRoot = 'annual-leave';
 
 // Api Versions
 const v1 = 'v1';
@@ -29,6 +30,7 @@ export const routesV1 = {
     root: hierarchyRoot,
     create: `/${hierarchyRoot}/create`,
     list: `/${hierarchyRoot}/list`,
+    remove: `/${hierarchyRoot}/remove/:id`,
   },
   type: {
     root: typesRoot,
@@ -57,5 +59,12 @@ export const routesV1 = {
     root: employeeRoot,
     create: `/${employeeRoot}/create`,
     list: `/${employeeRoot}/list`,
+    remove: `/${employeeRoot}/remove/:id`,
+  },
+  annualLeave: {
+    root: annualLeaveRoot,
+    create: `/${annualLeaveRoot}/create`,
+    list: `/${annualLeaveRoot}/list`,
+    remove: `/${annualLeaveRoot}/remove/:id`,
   },
 };

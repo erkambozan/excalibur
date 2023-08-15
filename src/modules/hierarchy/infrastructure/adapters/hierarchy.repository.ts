@@ -34,6 +34,10 @@ export class HierarchyRepository
     return await super.insert(entity as HierarchyEntity);
   }
 
+  async removeByNumberId(hierarchyId: number): Promise<void> {
+    return super.removeByNumberId(hierarchyId);
+  }
+
   findByParentPath(path: string): Promise<HierarchyEntity> {
     return Promise.resolve(undefined);
   }

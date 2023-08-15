@@ -1,5 +1,5 @@
 import { Mapper } from '@libs/ddd/mapper.interface';
-import { EmployeeEntity } from '@modules/employee/domain/entity/employee-entity';
+import { EmployeeEntity } from '@modules/employee/domain/entity/employee.entity';
 import {
   EmployeeModel,
   employeeSchema,

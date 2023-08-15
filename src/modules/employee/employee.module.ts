@@ -5,6 +5,7 @@ import { CreateEmployeeUseCase } from '@modules/employee/domain/usecase/create-e
 import { EmployeeMapper } from '@modules/employee/employee.mapper';
 import { EMPLOYEE_REPOSITORY } from '@modules/employee/employee.di-tokens';
 import { FindAllEmployeeUseCase } from '@modules/employee/domain/usecase/find-all-employee.use-case';
+import { RemoveEmployeeUseCase } from '@modules/employee/domain/usecase/remove-employee.use-case';
 
 const controllers = [EmployeeController];
 
@@ -12,6 +13,7 @@ const repositories: Provider[] = [
   { provide: EMPLOYEE_REPOSITORY, useClass: EmployeeRepository },
   CreateEmployeeUseCase,
   FindAllEmployeeUseCase,
+  RemoveEmployeeUseCase,
 ];
 
 const mappers: Provider[] = [EmployeeMapper];

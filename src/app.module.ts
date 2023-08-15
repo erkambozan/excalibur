@@ -7,6 +7,7 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { TypeModule } from '@modules/types/type.module';
 import { HierarchyModule } from '@modules/hierarchy/hierarchy.module';
 import { EmployeeModule } from '@modules/employee/employee.module';
+import { AnnualLeaveModule } from '@modules/annual-leave/annual-leave.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { EmployeeModule } from '@modules/employee/employee.module';
     TypeModule,
     HierarchyModule,
     EmployeeModule,
+    AnnualLeaveModule,
   ],
   controllers: [],
   providers: [],
